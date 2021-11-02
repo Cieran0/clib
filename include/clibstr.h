@@ -10,9 +10,8 @@ namespace clib
         {
             value = s;
         }
-        string()
-        {
-        }
+        string() {}
+        ~string() {}
         size_t size()
         {
             int i = 0;
