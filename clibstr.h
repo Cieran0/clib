@@ -11,6 +11,10 @@ namespace clib
             value = s;
         }
         string() {}
+        string(int size) 
+        {
+            value = (char*)malloc(sizeof(char)*size);
+        }
         ~string() {}
         size_t size()
         {
@@ -78,6 +82,19 @@ namespace clib
             }
 
             return strs;
+        }
+
+        string replace(char replacee, char replacer) 
+        {
+            string s;
+            char *buff = (char *)malloc(sizeof(char) * size());
+            for (size_t i = 0; i < size(); ++i)
+            {
+                if (value[i] == replacee) buff[i] = replacer;
+                else buff[i] = value[i];
+            }
+            s = buff;
+            return s;
         }
 
         char operator[](const size_t &i)
@@ -156,6 +173,8 @@ namespace clib
             }
             return -1;
         }
+
+        operator char*() { return value; }
 
         friend std::ostream &operator<<(std::ostream &os, string a);
 
