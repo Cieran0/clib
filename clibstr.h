@@ -8,7 +8,13 @@ namespace clib
     public:
         string(char *s)
         {
-            value = s;
+            size_t len = getLengthOfCharPtr(s);
+            value = (char*)malloc(sizeof(char)*len);
+            for (size_t i = 0; i < len; i++)
+            {
+                value[i] = s[i];
+            }
+            
         }
         string() {}
         string(int size) 
@@ -18,12 +24,7 @@ namespace clib
         ~string() {}
         size_t size()
         {
-            int i = 0;
-            while (value[i] != 0x00)
-            {
-                ++i;
-            }
-            return i;
+            return getLengthOfCharPtr(value);
         }
 
         string substring(size_t index, size_t length)
@@ -180,6 +181,16 @@ namespace clib
 
     private:
         char *value;
+
+        size_t getLengthOfCharPtr(char* charPtr)
+        {
+            size_t i = 0;
+            while (charPtr[i] != 0x00)
+            {
+                ++i;
+            }
+            return i;
+        }
     };
 
     std::ostream &operator<<(std::ostream &os, string a)
