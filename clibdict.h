@@ -16,8 +16,8 @@ namespace clib
         {
             if(hasKey(key)) return -1;
             ++len;
-            keyPtr = (keyType*)realloc(keyPtr, len);
-            valuePtr = (valueType*)realloc(valuePtr, len);
+            keyPtr = (keyType*)realloc(keyPtr, sizeof(keyPtr)*len);
+            valuePtr = (valueType*)realloc(valuePtr, sizeof(valuePtr)*len);
             keyPtr[len-1] = key;
             valuePtr[len-1] = value;
             return 0;
@@ -35,7 +35,7 @@ namespace clib
             {
                 if(keyPtr[i] == key) return valuePtr[i];
             }
-            return new valueType;
+            return (valueType)NULL;
         }
 
         int hasKey(keyType key)
