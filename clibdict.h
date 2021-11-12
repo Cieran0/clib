@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 namespace clib
 {
     template <typename keyType, typename valueType>

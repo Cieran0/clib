@@ -9,17 +9,18 @@ namespace clib
         string(char *s)
         {
             size_t len = getLengthOfCharPtr(s);
-            value = (char*)malloc(sizeof(char)*len);
+            value = (char*)malloc(sizeof(char)*(len+1));
             for (size_t i = 0; i < len; i++)
             {
                 value[i] = s[i];
             }
-            
+            value[len]='\0';
         }
         string() {}
         string(int size) 
         {
-            value = (char*)malloc(sizeof(char)*size);
+            value = (char*)malloc(sizeof(char)*size+1);
+            value[size] = '\0';
         }
         ~string() {}
         size_t size()
@@ -30,18 +31,20 @@ namespace clib
         string substring(size_t index, size_t length)
         {
             string s;
-            char *buff = (char *)malloc(sizeof(char) * length);
+            char *buff = (char *)malloc(sizeof(char) * length+1);
             for (size_t i = 0; i < length; ++i)
             {
                 buff[i] = value[index + i];
             }
+            buff[length] = '\0';
             s = buff;
             return s;
         }
 
-        string *split(char splitChar, int *size = NULL)
+        string *split(char splitChar, size_t *Ssize = NULL)
         {
-            string newS = string(value) + splitChar;
+            string newS(value);
+            newS.append(splitChar);
             size_t start = 0;
             size_t end = 0;
             size_t count = 0;
@@ -77,11 +80,10 @@ namespace clib
                 }
                 end++;
             }
-            if (size != NULL)
+            if (Ssize != NULL)
             {
-                *size = count;
+                *Ssize = count;
             }
-
             return strs;
         }
 
@@ -173,6 +175,15 @@ namespace clib
                     return i;
             }
             return -1;
+        }
+
+        void append(char c)
+        {
+            size_t len = size()+1;
+            value = (char*)realloc(value, (len+1));
+            value[len-1] = c;
+            value[len] = '\0';
+
         }
 
         operator char*() { return value; }
