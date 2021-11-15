@@ -16,7 +16,9 @@ namespace clib
             }
             value[len]='\0';
         }
-        string() {}
+        string() {
+            value = nullptr;
+        }
         string(int size) 
         {
             value = (char*)malloc(sizeof(char)*size+1);
@@ -28,27 +30,43 @@ namespace clib
             return getLengthOfCharPtr(value);
         }
 
-        string substring(size_t index, size_t length)
+        string remove(char c) 
         {
-            string s;
-            char *buff = (char *)malloc(sizeof(char) * length+1);
-            for (size_t i = 0; i < length; ++i)
+            size_t len = size();
+            size_t index = 0;
+            char buffer[(len-countOccur(c))+1];
+            for (size_t i = 0; i < len; i++)
             {
-                buff[i] = value[index + i];
+                if(value[i] != c) 
+                {
+                    buffer[index] = value[i];
+                    index++;
+                } 
             }
-            buff[length] = '\0';
-            s = buff;
-            return s;
+            buffer[(len-countOccur(c))] = '\0';
+            return string(buffer);
         }
 
-        string *split(char splitChar, size_t *Ssize = NULL)
+        string substring(size_t index, size_t length)
         {
+            if (length == 0) return string(0);
+            char buffer[length+1];
+            for (size_t i = 0; i < length; i++)
+            {
+                buffer[i] = value[index+i];
+            }
+            buffer[length] = '\0';
+            return string(buffer);
+        }
+
+        string *split(char splitChar, size_t &Ssize)
+        {
+            string* strs = (string*)malloc(0);
             string newS(value);
             newS.append(splitChar);
-            size_t start = 0;
-            size_t end = 0;
-            size_t count = 0;
-            size_t current = 0;
+            Ssize = 0;
+            int end =0;
+            int start = 0;
 
             while (end < newS.size())
             {
@@ -56,33 +74,14 @@ namespace clib
                 {
                     if ((end - start) > 0)
                     {
-                        count++;
+                        Ssize++;
+                        strs = (string*)realloc(strs, (sizeof(string)*(Ssize)));
+                        strs[Ssize-1] =  newS.substring(start, (end-start));
                     }
 
                     start = end + 1;
                 }
                 end++;
-            }
-
-            end = start = 0;
-            string *strs = (string *)malloc(sizeof(string) * count);
-            while (end < newS.size())
-            {
-                if (newS[end] == splitChar)
-                {
-                    if ((end - start) > 0)
-                    {
-                        strs[current] = newS.substring(start, (end - start));
-                        current++;
-                    }
-
-                    start = end + 1;
-                }
-                end++;
-            }
-            if (Ssize != NULL)
-            {
-                *Ssize = count;
             }
             return strs;
         }
@@ -116,6 +115,13 @@ namespace clib
                     return false;
             }
             return true;
+        }
+
+        bool operator==(const char &c) 
+        {
+            if (size() != 1) return false;
+            if (value[0] == c) return true;
+            return false;
         }
 
         bool operator!=(const string &s)
@@ -167,6 +173,16 @@ namespace clib
             this->value = (operator+(c).value);
         }
 
+        size_t countOccur(char c) 
+        {
+            size_t count = 0; 
+            for (size_t i = 0; i < size(); ++i)
+            {
+                if (value[i] == c) count++;
+            }
+            return count;
+        }
+
         size_t findChar(char c)
         {
             for (size_t i = 0; i < size(); ++i)
@@ -193,10 +209,17 @@ namespace clib
     private:
         char *value;
 
+
+
         size_t getLengthOfCharPtr(char* charPtr)
         {
+            if (value == nullptr )
+            {
+                return 0;
+            }
+            
             size_t i = 0;
-            while (charPtr[i] != 0x00)
+            while (charPtr[i] != '\0')
             {
                 ++i;
             }
