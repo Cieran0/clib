@@ -59,7 +59,7 @@ namespace clib
             return string(buffer);
         }
 
-        string *split(char splitChar, size_t &Ssize)
+        string *split(char splitChar, size_t Ssize)
         {
             string* strs = (string*)malloc(0);
             string newS(value);
