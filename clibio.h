@@ -8,7 +8,7 @@ namespace clib {
             std::ifstream file(name);
             file.seekg(0, std::ios::end);
             size_t size = file.tellg();
-            string buffer(size);
+            string buffer((int)(size));
             file.seekg(0);
             file.read((char*)buffer,size);
             return buffer;
