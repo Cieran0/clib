@@ -17,8 +17,9 @@ namespace clib
             value[len]='\0';
         }
         string(char c) {
-            string(1);
-            value[0] = 'c';
+            value = (char*)malloc(sizeof(char)*2);
+            value[0] = c;
+            value[1] = '\0';
         }
         string() {
             value = nullptr;
