@@ -16,6 +16,10 @@ namespace clib
             }
             value[len]='\0';
         }
+        string(char c) {
+            string(1);
+            value[0] = 'c';
+        }
         string() {
             value = nullptr;
         }
