@@ -138,7 +138,7 @@ namespace clib
         {
             char *buff1 = value;
             char *buff2 = s.value;
-            char *buff3 = (char *)malloc((sizeof(char) * (size() + ((string)s).size())));
+            char *buff3 = (char *)malloc((sizeof(char) * (size() + ((string)s).size() + 1)));
             for (size_t i = 0; i < size(); ++i)
             {
                 buff3[i] = buff1[i];
@@ -147,6 +147,7 @@ namespace clib
             {
                 buff3[i + size()] = buff2[i];
             }
+            buff3[size()+((string)s).size()] = '\0';
             string newStr = buff3;
             return newStr;
         }
