@@ -64,12 +64,12 @@ namespace clib
             return string(buffer);
         }
 
-        string *split(char splitChar, size_t Ssize)
+        string *split(char splitChar)
         {
             string* strs = (string*)malloc(0);
             string newS(value);
             newS.append(splitChar);
-            Ssize = 0;
+            size_t Ssize = 0;
             int end =0;
             int start = 0;
 
