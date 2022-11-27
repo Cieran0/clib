@@ -2,6 +2,11 @@
 #include <fstream>
 namespace clib {
 
+        bool FileExists(char* name) {
+            std::ifstream file(name);
+            return file.good();
+        }
+
     #if __has_include ("clibstr.h")
         string FileReadAllText(char* name)
         {
